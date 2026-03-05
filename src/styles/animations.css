@@ -1,0 +1,266 @@
+/* ═══════════════════════════════════════════════════════
+   SCROLL REVEAL ANIMATION SYSTEM
+   Powered by IntersectionObserver
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Base state: hidden before intersection ── */
+[data-animate] {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition:
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Revealed state ── */
+[data-animate].is-visible {
+  opacity: 1;
+  transform: translate(0, 0) scale(1) !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ANIMATION TYPES
+   ═══════════════════════════════════════════════════════ */
+
+/* Fade Up (default) */
+[data-animate="fade-up"] {
+  transform: translateY(48px);
+}
+
+/* Fade Up Subtle (smaller offset) */
+[data-animate="fade-up-sm"] {
+  transform: translateY(24px);
+}
+
+/* Fade Down */
+[data-animate="fade-down"] {
+  transform: translateY(-48px);
+}
+
+/* Fade In (no movement, just opacity) */
+[data-animate="fade-in"] {
+  transform: none;
+}
+
+/* Slide from Left */
+[data-animate="slide-left"] {
+  transform: translateX(-60px);
+}
+
+/* Slide from Right */
+[data-animate="slide-right"] {
+  transform: translateX(60px);
+}
+
+/* Scale Up */
+[data-animate="scale-up"] {
+  transform: scale(0.92);
+}
+
+/* Zoom In */
+[data-animate="zoom-in"] {
+  transform: scale(0.85);
+}
+
+/* Slide Up and Scale */
+[data-animate="slide-up-scale"] {
+  transform: translateY(40px) scale(0.96);
+}
+
+/* ═══════════════════════════════════════════════════════
+   STAGGER DELAYS (for child elements)
+   ═══════════════════════════════════════════════════════ */
+[data-animate-delay="100"] { transition-delay: 100ms; }
+[data-animate-delay="200"] { transition-delay: 200ms; }
+[data-animate-delay="300"] { transition-delay: 300ms; }
+[data-animate-delay="400"] { transition-delay: 400ms; }
+[data-animate-delay="500"] { transition-delay: 500ms; }
+[data-animate-delay="600"] { transition-delay: 600ms; }
+[data-animate-delay="700"] { transition-delay: 700ms; }
+[data-animate-delay="800"] { transition-delay: 800ms; }
+
+/* ═══════════════════════════════════════════════════════
+   DURATION MODIFIERS
+   ═══════════════════════════════════════════════════════ */
+[data-animate-duration="fast"] {
+  transition-duration: 0.5s;
+}
+[data-animate-duration="slow"] {
+  transition-duration: 1.2s;
+}
+[data-animate-duration="slower"] {
+  transition-duration: 1.6s;
+}
+
+/* ═══════════════════════════════════════════════════════
+   STAGGER CHILDREN — auto-delays for grouped items
+   ═══════════════════════════════════════════════════════ */
+[data-animate-stagger] > [data-animate]:nth-child(1) { transition-delay: 0ms; }
+[data-animate-stagger] > [data-animate]:nth-child(2) { transition-delay: 120ms; }
+[data-animate-stagger] > [data-animate]:nth-child(3) { transition-delay: 240ms; }
+[data-animate-stagger] > [data-animate]:nth-child(4) { transition-delay: 360ms; }
+[data-animate-stagger] > [data-animate]:nth-child(5) { transition-delay: 480ms; }
+[data-animate-stagger] > [data-animate]:nth-child(6) { transition-delay: 600ms; }
+[data-animate-stagger] > [data-animate]:nth-child(7) { transition-delay: 720ms; }
+[data-animate-stagger] > [data-animate]:nth-child(8) { transition-delay: 840ms; }
+[data-animate-stagger] > [data-animate]:nth-child(9) { transition-delay: 960ms; }
+[data-animate-stagger] > [data-animate]:nth-child(10) { transition-delay: 1080ms; }
+
+/* ═══════════════════════════════════════════════════════
+   HERO SECTION — special entrance animation
+   ═══════════════════════════════════════════════════════ */
+.hero-animate-title {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+.hero-animate-description {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
+}
+
+.hero-animate-buttons {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.9s forwards;
+}
+
+.hero-animate-image {
+  opacity: 0;
+  transform: scale(1.08);
+  animation: heroZoomIn 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0s forwards;
+}
+
+@keyframes heroFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroZoomIn {
+  to {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   DECORATIVE LINE ANIMATION
+   ═══════════════════════════════════════════════════════ */
+[data-animate="line-grow"] {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition:
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-animate="line-grow"].is-visible {
+  transform: scaleX(1) !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PARALLAX-LIKE BACKGROUND TEXT
+   ═══════════════════════════════════════════════════════ */
+.bg-text-parallax {
+  transition: transform 0.1s linear;
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════
+   CONTENT TEXT SECTIONS (privacidad, terminos)
+   ═══════════════════════════════════════════════════════ */
+.content-section-animate > h1,
+.content-section-animate > h2,
+.content-section-animate > h3 {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.content-section-animate > p,
+.content-section-animate > div,
+.content-section-animate > ul {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.content-section-animate > .is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════
+   FOOTER ANIMATION
+   ═══════════════════════════════════════════════════════ */
+.footer-animate > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-animate > .is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════
+   MAP SECTION — reveal effect
+   ═══════════════════════════════════════════════════════ */
+[data-animate="map-reveal"] {
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition:
+    opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-animate="map-reveal"].is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1) !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   TESTIMONIAL CARDS — stagger reveal
+   ═══════════════════════════════════════════════════════ */
+.testimonial-card-animate {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.testimonial-card-animate.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ═══════════════════════════════════════════════════════
+   REDUCED MOTION — respect user preferences
+   ═══════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  [data-animate],
+  .hero-animate-title,
+  .hero-animate-description,
+  .hero-animate-buttons,
+  .hero-animate-image,
+  .testimonial-card-animate,
+  .content-section-animate > *,
+  .footer-animate > * {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}

@@ -1,0 +1,82 @@
+---
+const {
+  title = "Connect With Us",
+  description,
+  imageSrc = "https://images.pexels.com/photos/667838/pexels-photo-667838.jpeg?auto=compress&cs=tinysrgb&w=1920&q=80",
+  imageAlt = "Luxurious office space",
+  buttons = [
+    {
+      text: "Fill out the form",
+      href: "#contact-form",
+    },
+  ],
+  className = "",
+} = Astro.props;
+---
+
+<section
+  class={`relative min-h-[80vh] md:min-h-[90vh] w-full flex flex-col items-center justify-center bg-primary overflow-hidden text-center isolate ${className}`}
+  aria-label={title}
+>
+  <!-- Background Image with Overlay -->
+  <div class="absolute inset-0 z-[-1] pointer-events-none" aria-hidden="true">
+    <img
+      src={imageSrc}
+      alt={imageAlt}
+      class="w-full h-full object-cover object-center scale-105 hero-animate-image"
+      loading="eager"
+    />
+    <!-- The dark overlay creates contrast for light text -->
+    <div class="absolute inset-0 bg-primary/60"></div>
+    <div
+      class="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-primary/60 to-transparent"
+    >
+    </div>
+    <div
+      class="absolute inset-x-0 bottom-0 h-40 bg-linear-to-t from-primary/60 to-transparent"
+    >
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div
+    class="px-6 mt-16 text-primary-foreground max-w-4xl mx-auto flex flex-col items-center gap-6"
+  >
+    <!-- Main Headline -->
+    <h1
+      class="font-serif text-3xl sm:text-5xl md:text-7xl leading-[1.1] font-normal text-primary-foreground tracking-normal capitalize hero-animate-title"
+    >
+      {title}
+    </h1>
+
+    <!-- Subheading -->
+    {
+      description && (
+        <p class="font-sans text-[clamp(0.9rem,1.5vw,1.1rem)] text-primary-foreground/95 mt-2 max-w-2xl leading-relaxed hero-animate-description">
+          {description}
+        </p>
+      )
+    }
+
+    <!-- Buttons -->
+    {
+      buttons && buttons.length > 0 && (
+        <div
+          class="flex flex-col sm:flex-row gap-5 mt-6 w-full sm:w-auto hero-animate-buttons"
+          role="group"
+          aria-label="Acciones principales"
+        >
+          {buttons.map((button: any) => (
+            <a
+              href={button.href}
+              class="inline-flex items-center justify-center uppercase tracking-widest text-xs md:text-sm font-medium px-5 py-3 md:px-6 md:py-4 border border-white/50 bg-transparent hover:bg-white hover:text-black transition-colors duration-300 w-full sm:w-auto"
+              aria-label={button.text}
+            >
+              {button.text}
+            </a>
+          ))}
+        </div>
+      )
+    }
+  </div>
+</section>

@@ -1,0 +1,55 @@
+---
+import { FormSection } from "../../components/contacto";
+import { Footer, Header, HeroSection } from "../../components/shared";
+import { CoreLayout } from "../../layouts";
+import { contactMeta } from "../../config";
+---
+
+<CoreLayout
+  title={contactMeta.title}
+  description={contactMeta.description}
+  keywords={contactMeta.keywords}
+  canonical={contactMeta.canonical}
+  type={contactMeta.type}
+  robots={contactMeta.robots}
+  structuredData={contactMeta.structuredData}
+>
+  <Header />
+  <main id="main-content">
+    <HeroSection
+      title="Hablemos de tu caso."
+      description="Contacta con nuestro equipo y recibe orientación legal clara, profesional y adaptada a tu situación. Estamos listos para ayudarte a tomar la mejor decisión jurídica."
+      imageSrc="https://images.pexels.com/photos/8111863/pexels-photo-8111863.jpeg"
+      imageAlt="Profesional jurídica atendiendo a un cliente por teléfono"
+      buttons={[]}
+    />
+    <FormSection client:load />
+
+    <section
+      class="max-w-7xl mx-auto w-full px-0 sm:px-6 lg:px-8 py-24 md:py-32"
+      aria-label="Ubicación de nuestra oficina"
+    >
+      <div class="flex flex-col items-center mb-16">
+        <h2
+          class="text-3xl md:text-4xl lg:text-5xl text-primary font-serif"
+          data-animate="fade-up"
+        >
+          Encuéntranos en
+        </h2>
+      </div>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d254508.39280630596!2d-74.24789504847307!3d4.648625946282862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9bfd2da6cb29%3A0x239d635520a33914!2sBogot%C3%A1%2C%20Colombia!5e0!3m2!1sen!2sco!4v1709495400000!5m2!1sen!2sco"
+        class="w-full h-[1000px] grayscale transition-all duration-300 hover:grayscale-0"
+        style="border:0;"
+        allowfullscreen=""
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        data-animate="map-reveal"
+        title="Mapa de ubicación de Egida Jurídica en Bogotá, Colombia"
+        aria-label="Mapa interactivo de Google Maps con la ubicación de nuestra oficina"
+      >
+      </iframe>
+    </section>
+  </main>
+  <Footer />
+</CoreLayout>

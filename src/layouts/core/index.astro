@@ -1,0 +1,361 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import { UpButton, WhatsappButton } from "../../components/shared";
+import { site } from "../../config";
+import "../../styles/global.css";
+import "../../styles/animations.css";
+
+const {
+  title = "",
+  description = "",
+  keywords = "",
+  canonical = Astro.url.pathname,
+  type = "",
+  robots = "",
+  headerTransparent = true,
+  structuredData,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=5"
+    />
+    <meta name="theme-color" content="#09090b" />
+    <meta name="robots" content={robots} />
+    <meta name="author" content={site.name} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={type} />
+    <meta property="og:locale" content="es_PE" />
+    <meta property="og:site_name" content={site.name} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/og-image.png" />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
+
+    {
+      structuredData && (
+        <script
+          type="application/ld+json"
+          set:html={JSON.stringify(structuredData)}
+        />
+      )
+    }
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- View Transitions: SPA-like page transitions -->
+    <ViewTransitions />
+  </head>
+  <body>
+    <!-- Page Transition Loader -->
+    <div id="page-loader" aria-hidden="true" role="presentation">
+      <div class="loader-bar"></div>
+    </div>
+
+    <a href="#main-content" class="skip-to-content"
+      >Saltar al contenido principal</a
+    >
+
+    <slot />
+    <WhatsappButton />
+    <UpButton />
+  </body>
+</html>
+
+<script>
+  // ═══════════════════════════════════════════════════════
+  // PAGE TRANSITION LOADER
+  // ═══════════════════════════════════════════════════════
+  document.addEventListener("astro:before-preparation", () => {
+    const loader = document.getElementById("page-loader");
+    if (loader) {
+      loader.classList.add("is-loading");
+    }
+  });
+
+  document.addEventListener("astro:after-preparation", () => {
+    // Keep loader active during swap
+  });
+
+  document.addEventListener("astro:after-swap", () => {
+    // Scroll to top on page change
+    window.scrollTo({ top: 0 });
+  });
+
+  document.addEventListener("astro:page-load", () => {
+    const loader = document.getElementById("page-loader");
+    if (loader) {
+      loader.classList.remove("is-loading");
+    }
+  });
+
+  // ═══════════════════════════════════════════════════════
+  // SCROLL REVEAL — IntersectionObserver Engine
+  // ═══════════════════════════════════════════════════════
+  function initScrollReveal() {
+    // 1) data-animate elements
+    const animatedElements = document.querySelectorAll("[data-animate]");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
+    );
+
+    animatedElements.forEach((el) => observer.observe(el));
+
+    // 2) Content sections (privacidad, terminos)
+    const contentSections = document.querySelectorAll(
+      ".content-section-animate",
+    );
+    contentSections.forEach((section) => {
+      const children = section.children;
+      const contentObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              contentObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.15, rootMargin: "0px 0px -30px 0px" },
+      );
+      Array.from(children).forEach((child, i) => {
+        (child as HTMLElement).style.transitionDelay = `${i * 60}ms`;
+        contentObserver.observe(child);
+      });
+    });
+
+    // 3) Testimonial cards stagger
+    const testimonialCards = document.querySelectorAll(
+      ".testimonial-card-animate",
+    );
+    const testimonialObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            testimonialObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" },
+    );
+    testimonialCards.forEach((card, i) => {
+      (card as HTMLElement).style.transitionDelay = `${i * 100}ms`;
+      testimonialObserver.observe(card);
+    });
+
+    // 4) Footer children animation
+    const footerAnimContainers = document.querySelectorAll(".footer-animate");
+    footerAnimContainers.forEach((container) => {
+      const children = container.children;
+      const footerObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("is-visible");
+              footerObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1 },
+      );
+      Array.from(children).forEach((child, i) => {
+        (child as HTMLElement).style.transitionDelay = `${i * 120}ms`;
+        footerObserver.observe(child);
+      });
+    });
+
+    // 5) Parallax background text on scroll
+    const parallaxTexts = document.querySelectorAll(".bg-text-parallax");
+    if (parallaxTexts.length > 0) {
+      let ticking = false;
+      window.addEventListener("scroll", () => {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            const scrollY = window.scrollY;
+            parallaxTexts.forEach((el) => {
+              const section = (el as HTMLElement).closest("section");
+              const rect = section?.getBoundingClientRect();
+              if (rect && rect.top < window.innerHeight && rect.bottom > 0) {
+                const speed = 0.08;
+                const sectionTop = rect.top;
+                const offset = (window.innerHeight - sectionTop) * speed;
+                (el as HTMLElement).style.transform =
+                  `translateX(-50%) translateY(calc(-10% + ${offset}px))`;
+              }
+            });
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    }
+  }
+
+  // Run on initial load
+  document.addEventListener("DOMContentLoaded", initScrollReveal);
+  // Run on Astro page transitions (View Transitions)
+  document.addEventListener("astro:page-load", initScrollReveal);
+</script>
+
+<style>
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     SKIP TO CONTENT — Accessibility
+     ═══════════════════════════════════════════════════════ */
+  .skip-to-content {
+    position: absolute;
+    top: -100%;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100000;
+    padding: 0.75rem 1.5rem;
+    background: var(--color-gold, #d3a985);
+    color: #000;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    border-radius: 0 0 0.5rem 0.5rem;
+    transition: top 0.2s ease;
+  }
+
+  .skip-to-content:focus {
+    top: 0;
+    outline: 2px solid var(--color-gold, #d3a985);
+    outline-offset: 2px;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     VIEW TRANSITION ANIMATIONS
+     ═══════════════════════════════════════════════════════ */
+
+  /* Custom fade animation for page transitions */
+  @keyframes page-fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes page-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* Override default View Transition animations */
+  ::view-transition-old(root) {
+    animation: page-fade-out 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  ::view-transition-new(root) {
+    animation: page-fade-in 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    animation-delay: 0.1s;
+  }
+
+  /* ═══════════════════════════════════════════════════════
+     PAGE LOADER — thin progress bar at top
+     ═══════════════════════════════════════════════════════ */
+  #page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  #page-loader.is-loading {
+    opacity: 1;
+  }
+
+  .loader-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      var(--gold, #d3a985),
+      #e8c9a8,
+      var(--gold, #d3a985)
+    );
+    border-radius: 0 2px 2px 0;
+    box-shadow:
+      0 0 10px var(--gold, #d3a985),
+      0 0 4px var(--gold, #d3a985);
+    transition: width 0.1s ease;
+  }
+
+  #page-loader.is-loading .loader-bar {
+    animation: loader-progress 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes loader-progress {
+    0% {
+      width: 0%;
+    }
+    30% {
+      width: 50%;
+    }
+    60% {
+      width: 80%;
+    }
+    100% {
+      width: 95%;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0s;
+    }
+    .loader-bar {
+      animation-duration: 0s;
+    }
+  }
+</style>

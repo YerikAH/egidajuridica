@@ -1,0 +1,127 @@
+---
+// About Section Component
+interface Props {
+  backgroundText?: string;
+  subtitle?: string;
+  title?: string;
+  description?: string;
+  linkText?: string;
+  linkHref?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  reverseLayout?: boolean;
+}
+
+const {
+  backgroundText = "ACERCA",
+  subtitle = "About us",
+  title = "Proud To Be<br />Your Utah Real<br />Estate Experts.",
+  description = "We understand that buying or selling a home is more than just a transaction: it's a life-changing experience. That's why our team of highly-seasoned real estate professionals is dedicated to providing exceptional, personalized service for all of our clients.",
+  linkText,
+  linkHref,
+  imageSrc = "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
+  imageAlt = "Elegant interior stairway",
+  reverseLayout = false,
+} = Astro.props;
+---
+
+<section
+  class="relative w-full bg-white pt-16 md:pt-24 lg:pt-32 z-20 transition-all"
+  aria-labelledby={`about-title-${backgroundText.toLowerCase().replace(/\s+/g, "-")}`}
+>
+  <!-- Giant Background Text Wrapper (Decorative) -->
+  <div
+    class="absolute inset-x-0 top-0 h-full overflow-hidden pointer-events-none select-none z-0"
+    aria-hidden="true"
+  >
+    <div
+      class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[10%] w-full text-center flex justify-center bg-text-parallax"
+    >
+      <span
+        class="text-[30vw] sm:text-[25vw] md:text-[28vw] lg:text-[26vw] font-serif text-[#F8F8F8] tracking-widest uppercase opacity-80 whitespace-nowrap"
+        style="font-family: 'Times New Roman', serif; line-height: 0.7;"
+      >
+        {backgroundText}
+      </span>
+    </div>
+  </div>
+
+  <div
+    class="relative z-10 max-w-350 mx-auto px-5 md:px-12 w-full grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 lg:gap-8 items-center lg:items-start"
+  >
+    <!-- Text Column -->
+    <div
+      class={`flex flex-col items-start max-w-lg lg:max-w-md justify-self-center lg:justify-self-center lg:mt-24 xl:mt-32 pb-10 md:pb-16 lg:pb-32 xl:pb-40 ${reverseLayout ? "lg:order-2" : ""}`}
+    >
+      <div
+        class="flex items-center gap-3 md:gap-4 mb-4 md:mb-6"
+        data-animate="fade-up"
+      >
+        <div class="h-px w-6 md:w-8 lg:w-10 bg-gold" aria-hidden="true"></div>
+        <span
+          class="text-zinc-600 italic text-xs md:text-sm lg:text-lg tracking-wide"
+          >{subtitle}</span
+        >
+      </div>
+
+      <h2
+        id={`about-title-${backgroundText.toLowerCase().replace(/\s+/g, "-")}`}
+        class="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-7xl text-zinc-900 leading-[1.05] tracking-tight mb-6 md:mb-8"
+        set:html={title}
+        data-animate="fade-up"
+        data-animate-delay="100"
+      />
+
+      <p
+        class="font-sans text-sm md:text-base text-zinc-500 mb-8 md:mb-10 max-w-100 tracking-normal"
+        data-animate="fade-up"
+        data-animate-delay="200"
+      >
+        {description}
+      </p>
+
+      {
+        linkText && linkHref && (
+          <a
+            href={linkHref}
+            class="px-5 py-2.5 md:px-6 md:py-3 border border-zinc-900 text-xs md:text-sm font-medium uppercase text-zinc-900 hover:bg-zinc-900 hover:text-white transition-colors duration-500"
+            aria-label={linkText}
+          >
+            {linkText}
+          </a>
+        )
+      }
+    </div>
+
+    <!-- Image Column -->
+    <div
+      class={`group relative w-full max-w-100 sm:max-w-125 mx-auto lg:max-w-none lg:mx-0 mt-8 md:mt-12 lg:mt-0 translate-y-4 md:translate-y-12 lg:translate-y-16 xl:translate-y-24 z-20 ${reverseLayout ? "lg:order-1 justify-self-center lg:justify-self-start" : "justify-self-center lg:justify-self-end"}`}
+      data-animate="fade-up"
+      data-animate-delay="300"
+      data-animate-duration="slow"
+    >
+      <!-- Offset Frame (Decorative) -->
+      <div
+        class={`absolute top-0 bottom-0 border border-gold z-0 hidden sm:block pointer-events-none transition-all duration-700 ease-in-out ${
+          reverseLayout
+            ? "left-0 w-full lg:w-[85%] translate-x-4 -translate-y-4 lg:translate-x-6 lg:-translate-y-6 group-hover:translate-x-0 group-hover:translate-y-0"
+            : "right-0 w-full lg:w-[85%] -translate-x-4 -translate-y-4 lg:-translate-x-6 lg:-translate-y-6 group-hover:translate-x-0 group-hover:translate-y-0"
+        }`}
+        aria-hidden="true"
+      >
+      </div>
+
+      <!-- Image Container -->
+      <div
+        class={`relative z-10 w-full aspect-3/4 lg:aspect-4/5 xl:aspect-[3/4.2] overflow-hidden transition-all duration-700 ease-in-out group-hover:grayscale ${reverseLayout ? "mr-auto lg:w-[85%]" : "ml-auto lg:w-[85%]"}`}
+      >
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          class="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+          loading="lazy"
+        />
+      </div>
+    </div>
+  </div>
+</section>

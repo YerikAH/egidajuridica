@@ -1,0 +1,125 @@
+---
+interface Feature {
+  title: string;
+  description: string;
+  linkText: string;
+  linkHref: string;
+}
+
+interface Props {
+  title?: string;
+  imageSrc?: string;
+  imageAlt?: string;
+  features?: Feature[];
+}
+
+const {
+  title = "Buy With The Best<br />Team In Utah.",
+  imageSrc = "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=800&q=80",
+  imageAlt = "Elegant modern living room interior",
+  features = [
+    {
+      title: "Get daily hand picked listings.",
+      description:
+        "We are here to make sure your dream home never slips by you.",
+      linkText: "Property Search",
+      linkHref: "#",
+    },
+    {
+      title: "Advice when you need it the most.",
+      description:
+        "We are here to give you advice, not pressure you into buying.",
+      linkText: "Contact Us",
+      linkHref: "#",
+    },
+    {
+      title: "Pair up with a trusted agent.",
+      description: "When you're ready, we are here to help you buy a home.",
+      linkText: "Meet The Team",
+      linkHref: "#",
+    },
+  ],
+} = Astro.props;
+---
+
+<section
+  class="relative w-full bg-background py-16 md:py-24 lg:py-32 z-20 transition-all overflow-hidden flex items-center"
+  aria-label="Especialidades jurídicas"
+>
+  <!-- Left Side Dark Panel (Decorative) -->
+  <div
+    class="absolute left-0 top-0 bottom-0 w-[20%] lg:w-[25%] bg-primary z-0 hidden md:block"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div
+    class="relative z-10 w-full max-w-7xl mx-auto px-5 md:px-12 grid grid-cols-1 lg:grid-cols-[35%_65%] gap-8 lg:gap-0 items-center"
+  >
+    <!-- Image Column -->
+    <div
+      class="group relative w-full max-w-125 mx-auto lg:max-w-none lg:mx-0 z-20 justify-self-center lg:justify-self-start"
+      data-animate="slide-left"
+      data-animate-duration="slow"
+    >
+      <!-- Offset Frame (Decorative) -->
+      <div
+        class={`absolute top-0 bottom-0 border border-gold z-0 hidden sm:block pointer-events-none transition-all duration-700 ease-in-out left-0 -translate-x-4 -translate-y-4 lg:-translate-x-6 lg:-translate-y-6 w-full lg:w-[88%] group-hover:translate-x-0 group-hover:translate-y-0`}
+        aria-hidden="true"
+      >
+      </div>
+
+      <!-- Image Container -->
+      <div
+        class={`relative z-10 w-full aspect-3/4 lg:aspect-4/5 xl:aspect-[3/4.2] overflow-hidden transition-all duration-700 ease-in-out group-hover:grayscale mr-auto lg:w-[88%] ml-auto lg:ml-0 bg-muted flex items-center justify-center h-100 sm:h-125 md:h-150 lg:h-180`}
+      >
+        <img
+          src={imageSrc}
+          alt={imageAlt}
+          class="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+    <!-- Text Column -->
+    <div class="flex flex-col items-start w-full lg:pl-8 z-20">
+      <h2
+        class="font-serif text-3xl sm:text-4xl md:text-5xl xl:text-7xl text-foreground leading-[1.1] mb-8 md:mb-12 lg:mb-16 tracking-tight"
+        set:html={title}
+        data-animate="fade-up"
+      />
+
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-6 w-full"
+        data-animate-stagger
+        role="list"
+        aria-label="Áreas de especialización"
+      >
+        {
+          features.map((feature) => (
+            <article
+              class="flex flex-col"
+              data-animate="fade-up"
+              role="listitem"
+            >
+              <h3 class="font-serif text-lg md:text-xl lg:text-2xl text-foreground mb-3 md:mb-4 leading-snug">
+                {feature.title}
+              </h3>
+              <p class="font-sans text-sm md:text-base tracking-normal text-muted-foreground mb-4 md:mb-6 leading-relaxed pr-4 md:pr-0">
+                {feature.description}
+              </p>
+              <a
+                href={feature.linkHref}
+                class="font-sans text-xs md:text-sm font-medium tracking-wide uppercase text-foreground hover:text-gold transition-colors duration-300 relative group/link inline-block w-fit"
+                aria-label={`${feature.linkText} — ${feature.title}`}
+              >
+                {feature.linkText}
+              </a>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
