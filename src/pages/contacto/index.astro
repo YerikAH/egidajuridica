@@ -2,7 +2,7 @@
 import { FormSection } from "../../components/contacto";
 import { Footer, Header, HeroSection } from "../../components/shared";
 import { CoreLayout } from "../../layouts";
-import { contactMeta } from "../../config";
+import { contactMeta, site } from "../../config";
 ---
 
 <CoreLayout
@@ -38,7 +38,7 @@ import { contactMeta } from "../../config";
         </h2>
       </div>
       <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d254508.39280630596!2d-74.24789504847307!3d4.648625946282862!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e3f9bfd2da6cb29%3A0x239d635520a33914!2sBogot%C3%A1%2C%20Colombia!5e0!3m2!1sen!2sco!4v1709495400000!5m2!1sen!2sco"
+        src={site.googleMaps}
         class="w-full h-[1000px] grayscale transition-all duration-300 hover:grayscale-0"
         style="border:0;"
         allowfullscreen=""
